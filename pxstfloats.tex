@@ -33,7 +33,8 @@
 どちらも脚注をボトムフロートより下に置くという意味ですので、この説明は
 奇妙です。しかも、\LaTeXe{}カーネルの標準では脚注はボトムフロートの
 \emph{上}に置かれますし、\Lpack{stfloats}パッケージ自身を\LaTeX{}上で
-読み込んだ場合のデフォルトもそれと同じだからです。これらの挙動に従えば、\verb+\fnunderfloat+は本来\verb+\fnabovefloat+と呼ばれるべきものです。
+読み込んだ場合のデフォルトもそれと同じだからです。これらの挙動に従えば、
+\verb+\fnunderfloat+は本来\verb+\fnabovefloat+と呼ばれるべきものです。
 このことは2007年の\verb+comp.text.tex+での議論にも上っています：
 \begin{quote}\begin{verbatim}
 https://groups.google.com/forum/#!msg/comp.text.tex/PA1IBKczm4A/wXlgCe_2ukIJ
@@ -76,7 +77,8 @@ p\LaTeX{}や、派生物であるup\LaTeXe{}も同じ挙動になっています
 Hiroshi Nakashima氏による\Lpack{fnpos}パッケージ（yafootバンドル）も、
 \Lpack{pxstfloats}と同様の機能を提供しています。\LaTeX{}やp\LaTeX{}の
 カーネルおよび\Lpack{pxstfloats}パッケージの挙動は、
-\Lpack{fnpos}パッケージの用語に当てはめると次のようになります：\begin{itemize}
+\Lpack{fnpos}パッケージの用語に当てはめると次のようになります：
+\begin{itemize}
 \item \LaTeX\ kernel
       = \verb+\makeFNmid+ + \verb+\makeFNabove+
 \item p\LaTeX\ kernel
