@@ -1,0 +1,88 @@
+%# -*- ascii characters only -*-
+\documentclass[a4paper]{article}
+\usepackage{doc}
+\usepackage{pxstfloats}
+\GetFileInfo{pxstfloats.sty}
+\def\Lpack#1{\textsf{#1}}
+\def\Lopt#1{\texttt{#1}}
+\title{Package \Lpack{pxstfloats} \fileversion}
+\author{Hironobu Yamashita}
+\date{\filedate}
+\begin{document}
+
+\maketitle
+
+The package \Lpack{pxstfloats} provides p\LaTeX\ support for
+\Lpack{stfloats} package written by Sigitas Tolu\v{s}is, included in
+\Lpack{sttools} bundle.
+
+\section{The behavior of \Lpack{stfloats} package}
+
+The documentation of \Lpack{stfloats} package describes two commands
+as follows:
+\begin{quote}
+\verb+\fnbelowfloat+:
+  Puts footnotes below the bottom floats.\par
+\verb+\fnunderfloat+ (default and standard):
+  Puts footnotes under the bottom floats.
+\end{quote}
+However, this statement is strange enough, as the standard behavior
+of \LaTeXe\ kernel is to put footnotes \emph{above} the bottom
+floats. Moreover, the same applies for the default behavior of
+\Lpack{stfloats} itself, when used under the standard \LaTeXe.
+According to these behaviors, \verb+\fnunderfloat+ really should be
+called \verb+\fnabovefloat+. See an old discussion in 2007 at
+\verb+comp.text.tex+:
+\begin{quote}\begin{verbatim}
+https://groups.google.com/forum/#!msg/comp.text.tex/PA1IBKczm4A/wXlgCe_2ukIJ
+\end{verbatim}\end{quote}
+
+More confusingly, the ``standard'' behavior of Japanese p\LaTeXe\
+kernel is different from that of \LaTeXe\ kernel; the footnotes are
+put \emph{below} the bottom floats, since the first release of
+p\LaTeXe.\footnote{The decision was made by the original author,
+ASCII Corporation, based on the common way of Japanese traditional
+publishing. The Unicode version of it, called up\LaTeXe, also has
+the same behavior.} Due to the implementation of \Lpack{stfloats}
+package, the footnotes always appear \emph{below} the bottom floats
+when it is used under p\LaTeXe, no matter whether \verb+\fnbelowfloat+
+or \verb+\fnunderfloat+ is effective.
+
+\section{Introduction to \Lpack{pxstfloats} package}
+
+Considering these situations, the package \Lpack{pxstfloats} provides
+the following features:
+\begin{quote}
+\verb+\fnbelowfloat+:
+  Puts footnotes below the bottom floats.\par
+\verb+\fnabovefloat+:
+  Puts footnotes above the bottom floats.\par
+\verb+\fnunderfloat+ (default):
+  Restores the default behavior of the kernel (\LaTeX\ or
+  p\LaTeX) which is currently used.
+\end{quote}
+The behavior of \verb+\fnbelowfloat+ is the same as that of the
+original \Lpack{stfloats}, which agrees with its literal meaning.
+The behavior of \verb+\fnunderfloat+ is kept unchanged for backward
+compatibility with all kernels (both \LaTeXe\ and p\LaTeXe), though
+it may not agree with the literal meaning of its name. The new macro
+\verb+\fnabovefloat+ is added, which follows its literal meaning.
+
+\section{Additional notes}
+
+The package \Lpack{fnpos} in yafoot bundle (by Hiroshi Nakashima)
+also provides a similar function. The behavior of
+\LaTeX/p\LaTeX\ kernels and the effect of \Lpack{pxstfloats}
+can be explained in \Lpack{fnpos} syntax as follows:
+\begin{itemize}
+\item \LaTeX\ kernel
+      = \verb+\makeFNmid+ + \verb+\makeFNabove+
+\item p\LaTeX\ kernel
+      = \verb+\makeFNbottom+ + \verb+\makeFNbelow+
+\item \verb+\fnbelowfloat+
+      = \verb+\makeFNmid+ + \verb+\makeFNbelow+
+\item \verb+\fnabovefloat+
+      = \verb+\makeFNmid+ + \verb+\makeFNabove+
+\end{itemize}
+
+\end{document}

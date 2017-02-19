@@ -1,0 +1,90 @@
+%# -*- coding: utf-8 -*-
+\ifx\epTeXinputencoding\undefined\else % defined in e-pTeX (> TL2016)
+  \epTeXinputencoding utf8    % ensure utf-8 encoding for platex
+\fi
+
+\documentclass[a4paper]{jsarticle}
+\usepackage{doc}
+\usepackage{pxstfloats}
+\GetFileInfo{pxstfloats.sty}
+\def\Lpack#1{\textsf{#1}}
+\def\Lopt#1{\texttt{#1}}
+\title{Package \Lpack{pxstfloats} \fileversion}
+\author{Hironobu Yamashita}
+\date{\filedate}
+\begin{document}
+
+\maketitle
+
+\Lpack{pxstfloats}パッケージは、Sigitas Tolu\v{s}氏による
+\Lpack{stfloats}パッケージ（\Lpack{sttools}バンドル）をp\LaTeX{}でも
+使えるようにするパッチを提供します。
+
+\section{\Lpack{stfloats}パッケージの挙動について}
+
+\Lpack{stfloats}パッケージは脚注とボトムフロートの位置を変更する
+2つの命令を定義しています。説明文書には以下のように書かれています：
+\begin{quote}
+\verb+\fnbelowfloat+:
+  Puts footnotes below the bottom floats.\par
+\verb+\fnunderfloat+ (default and standard):
+  Puts footnotes under the bottom floats.
+\end{quote}
+どちらも脚注をボトムフロートより下に置くという意味ですので、この説明は
+奇妙です。しかも、\LaTeXe{}カーネルの標準では脚注はボトムフロートの
+\emph{上}に置かれますし、\Lpack{stfloats}パッケージ自身を\LaTeX{}上で
+読み込んだ場合のデフォルトもそれと同じだからです。これらの挙動に従えば、\verb+\fnunderfloat+は本来\verb+\fnabovefloat+と呼ばれるべきものです。
+このことは2007年の\verb+comp.text.tex+での議論にも上っています：
+\begin{quote}\begin{verbatim}
+https://groups.google.com/forum/#!msg/comp.text.tex/PA1IBKczm4A/wXlgCe_2ukIJ
+\end{verbatim}\end{quote}
+
+さらにややこしいことに、日本のp\LaTeXe{}カーネルの標準は
+\LaTeXe{}カーネルと異なり、最初に公開された時から一貫して脚注は
+ボトムフロートの\emph{下}に置かれるように設計されています\footnote{%
+この設計はp\LaTeXe{}の原著者であるアスキー社によって、日本の組版で
+一般的な方法に従うための意図的なものです。2016年以降のコミュニティ版
+p\LaTeX{}や、派生物であるup\LaTeXe{}も同じ挙動になっています。}。
+しかし\Lpack{stfloats}の実装上の問題により、\verb+\fnbelowfloat+と
+\verb+\fnunderfloat+のどちらが有効かに関わらず、脚注は常に
+ボトムフロートの\emph{下}に現れてしまいます\footnote{%
+\Lpack{stfloats}はカーネルが「脚注をボトムフロートの上に置く」と
+いう定義であると仮定し、無条件にその定義を保存します。}。
+つまり、脚注をボトムフロートの上に出すことが出来ません。
+
+\section{\Lpack{pxstfloats}パッケージの機能}
+
+上の状況に対処するため、\Lpack{pxstfloats}パッケージは以下の機能を
+提供します：
+\begin{quote}
+\verb+\fnbelowfloat+:
+  脚注をボトムフロートの下に置きます。\par
+\verb+\fnabovefloat+:
+  脚注をボトムフロートの上に置きます。\par
+\verb+\fnunderfloat+ (default):
+  現在使われているカーネル（\LaTeX{}またはp\LaTeX{}）のまま
+  変更しません。
+\end{quote}
+\verb+\fnbelowfloat+の挙動は元の\Lpack{stfloats}と同じで、文字どおりの
+意味を持ちます。\verb+\fnunderfloat+の挙動も\LaTeXe{}とp\LaTeXe{}の
+どちらのカーネルでも従来の挙動と同じになっています（文字どおりの
+意味と異なるところまで同じです）。新設した\verb+\fnabovefloat+は
+文字どおりの意味を持ち、\LaTeXe{}でもp\LaTeXe{}でも正常に機能します。
+
+\section{補足事項}
+
+Hiroshi Nakashima氏による\Lpack{fnpos}パッケージ（yafootバンドル）も、
+\Lpack{pxstfloats}と同様の機能を提供しています。\LaTeX{}やp\LaTeX{}の
+カーネルおよび\Lpack{pxstfloats}パッケージの挙動は、
+\Lpack{fnpos}パッケージの用語に当てはめると次のようになります：\begin{itemize}
+\item \LaTeX\ kernel
+      = \verb+\makeFNmid+ + \verb+\makeFNabove+
+\item p\LaTeX\ kernel
+      = \verb+\makeFNbottom+ + \verb+\makeFNbelow+
+\item \verb+\fnbelowfloat+
+      = \verb+\makeFNmid+ + \verb+\makeFNbelow+
+\item \verb+\fnabovefloat+
+      = \verb+\makeFNmid+ + \verb+\makeFNabove+
+\end{itemize}
+
+\end{document}
